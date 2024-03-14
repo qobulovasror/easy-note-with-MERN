@@ -9,9 +9,11 @@ export default async function(app){
     //default middleware
     app.use(Express.json())
     app.use(Express.urlencoded({extended: true}))
+    app.set('view engine', 'ejs')
 
     //custom middleware
     app.use(customMiddleware)
+    app.use(Express.static('public'))
     
     //routes
     app.use("/", home);

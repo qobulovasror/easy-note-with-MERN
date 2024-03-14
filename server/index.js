@@ -3,7 +3,7 @@ import Express from "express";
 import dotEnv from 'dotenv';
 
 //import functions from src
-import routes from './src/startup/router.js';
+import routes from './startup/router.js';
 
 dotEnv.config()
 const app = Express();
