@@ -11,10 +11,11 @@ const customMiddleware = (req, res, next) => {
 }
 
 const customErrorMiddleware = function(error, req, res, next){
-    res.status(error.code || 500).json({
-        ok: false,
-        message: error.message || "Internal server error"
-    })
+    res.render("error", {errorCode: error.code || 500, message: error.message || "Internal server error"})
+    // res.status(error.code || 500).json({
+    //     ok: false,
+    //     message: error.message || "Internal server error"
+    // })
 }
 
 export {

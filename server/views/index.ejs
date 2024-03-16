@@ -3,11 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Easy Note</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
@@ -28,6 +33,15 @@
         white-space: pre-wrap;
         word-wrap: break-word;
       }
+      .list-item {
+        color: #000;
+        font-size: 18px;
+        text-decoration: none;
+        width: 100%;
+        padding: 8px;
+        display: block;
+        font-weight: 500;
+      }
     </style>
   </head>
   <body style="overflow: hidden">
@@ -46,7 +60,10 @@
                 placeholder="search note"
               />
             </div>
-            <button type="button" class="btn btn-primary" style="height: 100%">
+            <button type="button" class="btn btn-primary" style="height: 100%" 
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            data-bs-title="add new note">
               <i class="bi bi-file-earmark-plus-fill"></i>
             </button>
           </div>
@@ -54,12 +71,15 @@
         <ul
           class="list-group list-group-flush p-3"
           style="height: 90vh; width: 100%; overflow: auto"
-        >
-          <li class="list-group-item">Lorem ipsum dolor sit amet conse</li>
-          <li class="list-group-item">A second item</li>
-          <li class="list-group-item">A third item</li>
-          <li class="list-group-item">A third item</li>
-          <li class="list-group-item">And a fifth one</li>
+        > 
+          <% for(let item of noteList){ %>
+          <li class="list-group-item">
+            <a class="list-item" href="<%= item.link %>"><%= item.name %></a>
+          </li>
+          <% } %>
+          <% if(noteList?.length==0) {%>
+            <li class="list-group-item text-center fs-4 fw-bold pt-5">No Notes Yet</li>
+          <%}%>
         </ul>
       </div>
       <div class="col-9 p-0 m-0">
@@ -76,7 +96,9 @@
                   autocomplete="off"
                   checked
                 />
-                <label class="btn btn-outline-primary" for="edit" id="editBtn">Edit</label>
+                <label class="btn btn-outline-primary" for="edit" id="editBtn"
+                  >Edit</label
+                >
                 <input
                   type="radio"
                   class="btn-check"
@@ -84,7 +106,10 @@
                   id="preview"
                   autocomplete="off"
                 />
-                <label class="btn btn-outline-primary" for="preview" id="previewBtn"
+                <label
+                  class="btn btn-outline-primary"
+                  for="preview"
+                  id="previewBtn"
                   >Preview</label
                 >
               </div>
@@ -93,16 +118,33 @@
                   type="button"
                   class="btn btn-success me-3"
                   style="height: 100%"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  data-bs-title="Save"
                 >
                   <i class="bi bi-floppy"></i>
                 </button>
                 <button
                   type="button"
-                  class="btn btn-danger"
+                  class="btn btn-danger me-3"
                   style="height: 100%"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  data-bs-title="delete note"
                 >
                   <i class="bi bi-trash3"></i>
                 </button>
+                <a
+                  type="button"
+                  class="btn btn-secondary ms-2"
+                  style="height: 100%"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  data-bs-title="Logout"
+                  href="/auth/logout"
+                >
+                  <i class="bi bi-box-arrow-right"></i>
+              </a>
               </div>
             </div>
           </div>
@@ -158,24 +200,34 @@
       }
     </script>
     <script>
-      const converter = new showdown.Converter()
+      const converter = new showdown.Converter();
       const viewNote = document.getElementById("view-note");
       const enterNote = document.getElementById("enter-note");
-      const editBtn = document.getElementById('editBtn');
-      const previewBtn = document.getElementById('previewBtn');
+      const editBtn = document.getElementById("editBtn");
+      const previewBtn = document.getElementById("previewBtn");
 
-      editBtn.addEventListener('click', ()=>{
-        enterNote.style.display='block';
-        viewNote.style.display='none';
-      })
-
-      previewBtn.addEventListener('click', ()=>{
-        let noteHeader = document.getElementById("note-hader").value
-        let noteBody = converter.makeHtml(document.getElementById("note-body-text").value);
-        enterNote.style.display='none';
-        viewNote.style.display='block';
-        viewNote.innerHTML = `<h1>${noteHeader}</h1>`+noteBody
+      editBtn.addEventListener("click", () => {
+        enterNote.style.display = "block";
+        viewNote.style.display = "none";
       });
+
+      previewBtn.addEventListener("click", () => {
+        let noteHeader = document.getElementById("note-hader").value;
+        let noteBody = converter.makeHtml(
+          document.getElementById("note-body-text").value
+        );
+        enterNote.style.display = "none";
+        viewNote.style.display = "block";
+        viewNote.innerHTML = `<h1>${noteHeader}</h1>` + noteBody;
+      });
+    </script>
+    <script>
+      const tooltipTriggerList = document.querySelectorAll(
+        '[data-bs-toggle="tooltip"]'
+      );
+      const tooltipList = [...tooltipTriggerList].map(
+        (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+      );
     </script>
   </body>
 </html>
