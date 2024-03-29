@@ -60,10 +60,14 @@
                 placeholder="search note"
               />
             </div>
-            <button type="button" class="btn btn-primary" style="height: 100%" 
-            data-bs-toggle="tooltip"
-            data-bs-placement="bottom"
-            data-bs-title="add new note">
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="height: 100%"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              data-bs-title="add new note"
+            >
               <i class="bi bi-file-earmark-plus-fill"></i>
             </button>
           </div>
@@ -71,15 +75,16 @@
         <ul
           class="list-group list-group-flush p-3"
           style="height: 90vh; width: 100%; overflow: auto"
-        > 
-          <% for(let item of noteList){ %>
+        >
+          <% if(!noteList || noteList.length==0) {%>
+          <li class="list-group-item text-center fs-4 fw-bold pt-5">
+            No Notes Yet
+          </li>
+          <%}else for(let item of noteList){ %>
           <li class="list-group-item">
             <a class="list-item" href="<%= item.link %>"><%= item.name %></a>
           </li>
           <% } %>
-          <% if(noteList?.length==0) {%>
-            <li class="list-group-item text-center fs-4 fw-bold pt-5">No Notes Yet</li>
-          <%}%>
         </ul>
       </div>
       <div class="col-9 p-0 m-0">
@@ -144,7 +149,7 @@
                   href="/auth/logout"
                 >
                   <i class="bi bi-box-arrow-right"></i>
-              </a>
+                </a>
               </div>
             </div>
           </div>

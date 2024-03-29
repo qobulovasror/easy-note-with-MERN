@@ -4,9 +4,13 @@ import {getNotes} from '../model/db_tables.js'
 
 const router = Router()
 
-router.get('/', auth, (req, res)=>{
-    // res.render("index", {noteList: [{name: "Javascript", link: "javascript"}], currently: null})
-    res.render("index", {noteList: [], currently: null})
+router.get('/', auth, async (req, res, next)=>{
+    try {
+        const notes= await getNotes()
+        res.render("index", {noteList: notes, currently: null})
+    } catch (error) {
+        next(error);
+    }
 })
 
 export default router;

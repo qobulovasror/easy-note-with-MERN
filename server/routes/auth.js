@@ -77,7 +77,6 @@ router.post("/regis", async (req, res, next) => {
 
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(req.body.password, salt);
-    console.log(req.body.name, req.body.email, hashPassword);
     await addUser(req.body.name, req.body.email, hashPassword);
     //   role: req.body.role ? req.body.role : "user",
     let newSession = req.session;
@@ -95,7 +94,7 @@ router.get('/logout', (req, res, next)=>{
     res.clearCookie('connect.sid');
     res.redirect('/')
   } catch (error) {
-    next()
+    next(error)
   }
 })
 
