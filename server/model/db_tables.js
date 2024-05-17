@@ -10,6 +10,7 @@ async function addUser(name, email, password) {
       (${id}, ${name}, ${email}, ${password});`);
   return id;
 }
+
 async function addNote(title, body, owner) {
   const id = uuidv4();
   await db.query(sql`INSERT INTO note 
@@ -73,23 +74,23 @@ async function getUser(id, name, email) {
 }
 
 // update note
-// async function updateNote(id, title, body) {
-//   try {
-//     const oldNote = await getNotes(id);
-//     if(!oldNote) return
-//     let oldgrade = oldNote[0];
-//     await db.query(sql`
-//   UPDATE users
-//   SET (grade)
-//   = (${grade + oldgrade})
-//   WHERE id=${id}
-//   `);
-//     const users = await getUser(null, null, roomId);
-//     return users;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+async function updateNote(id, title, body) {
+  try {
+    const oldNote = await getNotes(id);
+    if(!oldNote) return
+    let oldgrade = oldNote[0];
+    await db.query(sql`
+      UPDATE users
+      SET (grade)
+      = (${grade + oldgrade})
+      WHERE id=${id}
+      `);
+    const users = await getUser(null, null, roomId);
+    return users;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // async function updateUser(id, ...data) {
 //   try {
 //   } catch (error) {
@@ -122,7 +123,7 @@ export {
   addNote,
   getUser,
   getNotes,
-//   updateNote,
+  updateNote,
 //   uspdateUser,
   removeUser,
   removeNote,
